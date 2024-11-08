@@ -5,15 +5,13 @@
 <title>Slot-Machine-3</title>
 </head>
 <body>
-<div>
     <div>
-        <div id="ring1" class="ring">{{[0]}}</div>
-        <div id="ring2" class="ring">{{[1]}}</div>
-        <div id="ring3" class="ring">{{[2]}}</div>
+        {{range .}}
+            <div>{{.}}</div>
+        {{end}}
     </div>
     <div>
-        <button onclick="#">Start</button>
+        <button onclick="location.reload()">Start</button>
     </div>
-</div>
 </body>
 </html>

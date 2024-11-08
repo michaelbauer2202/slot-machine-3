@@ -51,13 +51,11 @@ func SpinTheWheels(sl rng.SlotMachine) (slots []int) {
 }
 
 func ShowIndex(sl rng.SlotMachine) func(w http.ResponseWriter, r *http.Request) {
+	templateFile, _ := os.Open("index.gohtml")
+	tplString, _ := io.ReadAll(templateFile)
+	tpl, _ := template.New("index").Parse(string(tplString))
+	defer templateFile.Close()
 	return func(w http.ResponseWriter, r *http.Request) {
-
-		templateFile, _ := os.Open("index.gohtml")
-		tplString, _ := io.ReadAll(templateFile)
-		defer templateFile.Close()
-
-		tpl, _ := template.New("index").Parse(string(tplString))
 		tpl.Execute(w, SpinTheWheels(sl))
 	}
 }
