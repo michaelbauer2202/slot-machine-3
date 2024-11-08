@@ -22,13 +22,13 @@ const (
 func main() {
 	loadEnvFile(".env")
 	symbols := []rng.Symbol{
-		{SymbolId: CHERRY, WeightsPerReel: []int{1, 0, 0}, BetMultiplier: 2},
-		{SymbolId: ORANGE, WeightsPerReel: []int{3, 0, 0}, BetMultiplier: 4},
-		{SymbolId: PLUM, WeightsPerReel: []int{0, 0, 0}, BetMultiplier: 6},
-		{SymbolId: BELL, WeightsPerReel: []int{0, 0, 0}, BetMultiplier: 8},
-		{SymbolId: SEVEN, WeightsPerReel: []int{0, 0, 0}, BetMultiplier: 10},
-		{SymbolId: CHOCOLATE, WeightsPerReel: []int{0, 1, 0}, BetMultiplier: 12},
-		{SymbolId: BAR, WeightsPerReel: []int{0, 0, 1}, BetMultiplier: 20},
+		{SymbolId: CHERRY, WeightsPerReel: []int{5, 8, 5}, BetMultiplier: 2},
+		{SymbolId: ORANGE, WeightsPerReel: []int{2, 3, 3}, BetMultiplier: 4},
+		{SymbolId: PLUM, WeightsPerReel: []int{3, 3, 5}, BetMultiplier: 6},
+		{SymbolId: BELL, WeightsPerReel: []int{2, 1, 2}, BetMultiplier: 8},
+		{SymbolId: SEVEN, WeightsPerReel: []int{2, 2, 1}, BetMultiplier: 10},
+		{SymbolId: CHOCOLATE, WeightsPerReel: []int{2, 2, 2}, BetMultiplier: 12},
+		{SymbolId: BAR, WeightsPerReel: []int{1, 1, 1}, BetMultiplier: 20},
 	}
 
 	slotMachine := rng.SlotMachine{}
@@ -55,6 +55,7 @@ func ShowIndex(sl rng.SlotMachine) func(w http.ResponseWriter, r *http.Request) 
 	tplString, _ := io.ReadAll(templateFile)
 	tpl, _ := template.New("index").Parse(string(tplString))
 	defer templateFile.Close()
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		tpl.Execute(w, SpinTheWheels(sl))
 	}
