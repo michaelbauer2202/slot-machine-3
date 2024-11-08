@@ -14,3 +14,5 @@ func (reel Reel) PickRandomSymbol() Symbol {
 	idx := randomorg.RandomIntegers(1, 0, len(reel)-1)[0]
 	return reel[idx]
 }
+
+type SlotMachine []Reel

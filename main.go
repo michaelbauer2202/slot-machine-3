@@ -1,7 +1,12 @@
 package main
 
 import (
+	"html/template"
+	"io"
+	"net/http"
+	"os"
 	"silburyslot/rng"
+	"silburyslot/routes"
 )
 
 const (
@@ -26,16 +31,33 @@ func main() {
 		{SymbolId: BAR, WeightsPerReel: []int{0, 0, 1}, BetMultiplier: 20},
 	}
 
-	slotMachine := []rng.Reel{}
+	slotMachine := rng.SlotMachine{}
 	for i := range len(symbols[0].WeightsPerReel) {
 		newReel := rng.BuildReel(symbols, i)
 		slotMachine = append(slotMachine, newReel)
 	}
 
-	// for _, reel := range slotMachine {
-	// 	for _, sym := range reel {
-	// 		fmt.Printf("%d ", sym.SymbolId)
-	// 	}
-	// 	fmt.Println()
-	// }
+	http.HandleFunc("/", ShowIndex(slotMachine))
+	http.HandleFunc("/sampleEndpoint", routes.Endpoint)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.ListenAndServe(":8080", nil)
+}
+
+func SpinTheWheels(sl rng.SlotMachine) (slots []int) {
+	for i := range sl {
+		slots = append(slots, sl[i].PickRandomSymbol().SymbolId)
+	}
+	return slots
+}
+
+func ShowIndex(sl rng.SlotMachine) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		templateFile, _ := os.Open("index.gohtml")
+		tplString, _ := io.ReadAll(templateFile)
+		defer templateFile.Close()
+
+		tpl, _ := template.New("index").Parse(string(tplString))
+		tpl.Execute(w, SpinTheWheels(sl))
+	}
 }
