@@ -3,15 +3,16 @@
 <head>
 <meta charset="utf-8">
 <title>Slot-Machine-3</title>
+<link rel="stylesheet" href="static/slot.css">
 </head>
 <body>
-    <div>
+    <div id="stage" class="perspective-on" style="padding-top:100px">
         {{range .}}
-            <div>{{.}}</div>
+            <div class="ring">{{.}}</div>
         {{end}}
     </div>
     <div>
-        <button onclick="location.reload()">Start</button>
+        <button onclick="location.reload()" class="go">Start</button>
     </div>
 </body>
 </html>

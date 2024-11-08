@@ -31,6 +31,9 @@ func BuildReel(symbols []Symbol, reelIndex int) (r Reel) {
 	writePtr := 0
 	for i, probability := range probabilities {
 		for range probability {
+			if writePtr == len(Reel{}) {
+				return r
+			}
 			r[writePtr] = symbols[i]
 			writePtr++
 		}
